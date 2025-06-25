@@ -1,0 +1,92 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .navbar-brand {
+ 
+ padding-top: .3125rem;
+ padding-bottom: .3125rem;
+ margin-right: 1rem;
+ font-size: 1.25rem;
+ text-decoration: none;
+ white-space: nowrap;
+ font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+
+}
+button{
+  font-weight: bold;
+}
+.navbar .theme-switcher {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: aquamarine; /* Original color button */
+  color: #ecf0f1;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navbar .theme-switcher:hover {
+  background-color: #cfad4e; /* Lighten color on hover */
+}
+
+/* Light Theme Styles */
+body.light-theme, .navbar.light-theme {
+  background-color: #d4dddd; /* Light gray background */
+  color: #333; /* Dark text */
+}
+
+body.light-theme .navbar .theme-switcher {
+  background-color: #333; /* Dark button for light theme */
+  color: #f0f0f0;
+}
+
+body.light-theme .navbar .theme-switcher:hover {
+  background-color: #666; /* Darker button color on hover */
+}
+</style>
+<header>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        
+    <div class="container-fluid">
+        <!-- <img src="" alt=""> -->
+        <a class="navbar-brand" href="/posts">Home </a>
+        <a class="navbar-brand" href="/posts/new">Create New post</a>
+        <a class="navbar-brand" href="/posts">Blog</a>
+        <!-- <ul style="color:white; float: right;" class="nav navbar-nav"> -->
+          <button><a class="navbar-brand" href="/login">Login   </a> </button>
+          <button><a  class="navbar-brand" href="#">Sign Up </a> </button>
+          <button class="theme-switcher" onclick="toggleTheme()">
+            <svg class="sun-and-moon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+              <mask class="moon" id="moon-mask">
+                <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                <circle cx="24" cy="10" r="6" fill="black" />
+              </mask>
+              <circle class="sun" cx="12" cy="12" r="6" mask="url(#moon-mask)" fill="currentColor" />
+              <g class="sun-beams" stroke="currentColor">
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </g>
+            </svg>
+          </button>
+      <!-- </ul> -->
+        </div>
+       
+      
+  </nav>
+</header>
+<script>
+function toggleTheme() {
+    // Toggle the light theme class on the body
+    document.body.classList.toggle('light-theme');
+    document.querySelector('.navbar').classList.toggle('light-theme');
+}
+
+</script>

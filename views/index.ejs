@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog-Gram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <%- include('header.ejs') %>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        /* Your existing styles here */
+        .btn {
+            display: flex;
+            gap: 10px;
+        }
+        .post-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .left-column, .right-column {
+            width: 48%;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .review-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: -27px;
+        }
+        .review-option {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .review-option input[type="radio"] {
+            display: none;
+        }
+        .review-option .emoji {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .review-option input[type="radio"]:checked + .emoji {
+            transform: scale(1.2);
+            color: #f39c12;
+        }
+        .review-option .emoji::after {
+            content: attr(aria-label);
+            position: absolute;
+            top: 35px;
+            font-size: 12px;
+            color: #555;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .review-option .emoji:hover::after {
+            opacity: 1;
+        }
+        .comment-section {
+            width: 500px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .comment-section h2 {
+            margin-bottom: 20px;
+        }
+        .comments {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .comment {
+            padding: 10px;
+        }
+        .comment:last-child {
+            border-bottom: none;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
+        .comment-form textarea {
+            resize: none;
+            height: 40px;
+            width: auto;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border-radius: 15px;
+        }
+        .comment-form button {
+            align-self: flex-end;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            margin-right: -127px;
+            margin-top: -73px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .comment-form button:hover {
+            background: #0056b3;
+        }
+        .download-button {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #007bff;
+            margin-top: 4px;
+            margin-left: -23px;
+        }
+        #post {
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            font-size: 16px;
+            color: rgb(128, 114, 114);
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .post-content{
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            color: rgb(128, 114, 114);
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Blog-Gram</h1>
+    <p class="slogen">
+        Welcome to Blog-Gram, your daily go-to for real-life stories.<br>
+        Here, we share blogs that capture everyday moments and experiences. Our community of writers offers a range of perspectives,<br>
+        from personal reflections and practical advice to inspiring stories and fun anecdotes. Whether you need a boost of motivation,<br>
+        some helpful tips, or just want to read something relatable, Blog-Gram has it all. Join us and explore a world where every story counts.
+    </p>
+    <button class="button"><a class="navbar-brand" href="/posts/new">Create New Post</a></button>
+
+    <div class="container post-container">
+        <div class="left-column">
+            <% posts.forEach((post, index) => { %>
+                <% if (index % 2 === 0) { %>
+                    <div class="card"  id="post<%= post.id %>" class="post-content">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= post.title %></h5>
+                            <p class="card-text"><%= post.content %></p>
+                        </div>
+                    </div>
+                    <div class="review-container">
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="1" />
+                            <span class="emoji" role="img" aria-label="Angry">😡</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="2" />
+                            <span class="emoji" role="img" aria-label="Sad">😢</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="3" />
+                            <span class="emoji" role="img" aria-label="Neutral">😐</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="4" />
+                            <span class="emoji" role="img" aria-label="Happy">😊</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="5" />
+                            <span class="emoji" role="img" aria-label="Very Happy">😁</span>
+                        </label>
+                        <p class="navbar-brand" style="font-style: italic; font-size: small;">
+                            <em>Posted on: <%= new Date(post.date).toLocaleString() %></em>
+                        </p>
+                    </div>
+                    <div class="btn">
+                        <a class="navbar-brand" href="/posts/<%= post.id %>/edit">
+                            <button style="height: auto; margin-left: -11px; border-radius: none; background-color: rgb(124, 245, 124); font-size: medium;">Edit</button>
+                        </a>
+                        <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+                            <button type="button" class="download-button" data-post-id="<%= post.id %>">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="navbar-brand" style="height: auto;margin-left: 20px;
+                            margin-top: -33px; border: none; font-size: medium; background-color: brown;" type="submit">Delete</button>
+                        </form>
+                        <div id="post<%= post.id %>">
+                            <div class="comment-form">
+                                <textarea id="comment<%= post.id %>" placeholder="Write a comment..."></textarea>
+                                <br>
+                                <button onclick="postComment('<%= post.id %>')" id="comment-button<%= post.id %>" class="comment-button">Comment</button>
+                                <div id="comments<%= post.id %>" class="comments">
+                                    <!-- Comments will be dynamically loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% }) %>
+        </div>
+
+        <div class="right-column">
+            <% posts.forEach((post, index) => { %>
+                <% if (index % 2 !== 0) { %>
+                    <div class="card"  id="post<%= post.id %>" class="post-content">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= post.title %></h5>
+                            <p class="card-text"><%= post.content %></p>
+                        </div>
+                    </div>
+                    <div class="review-container">
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="1" />
+                            <span class="emoji" role="img" aria-label="Angry">😡</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="2" />
+                            <span class="emoji" role="img" aria-label="Sad">😢</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="3" />
+                            <span class="emoji" role="img" aria-label="Neutral">😐</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="4" />
+                            <span class="emoji" role="img" aria-label="Happy">😊</span>
+                        </label>
+                        <label class="review-option">
+                            <input type="radio" name="review<%= post.id %>" value="5" />
+                            <span class="emoji" role="img" aria-label="Very Happy">😁</span>
+                        </label>
+                        <p class="navbar-brand" style="font-style: italic; font-size: small;">
+                            <em>Posted on: <%= new Date(post.date).toLocaleString() %></em>
+                        </p>
+                    </div>
+                    <div class="btn">
+                        <a class="navbar-brand" href="/posts/<%= post.id %>/edit">
+                            <button style="height: auto; margin-left: -5px; border-radius: none; background-color: rgb(124, 245, 124); font-size: medium;">Edit</button>
+                        </a>
+                        <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+                            <button class="navbar-brand" style="height: auto; margin-left: 20px;   border: none; font-size: medium; background-color: brown;" type="submit">Delete</button>
+                            <button type="button" class="download-button" style="margin-top: -30px;" data-post-id="<%= post.id %>">
+                                <i class="fas fa-download"></i></button>
+                           
+                        </form>
+                        <div id="post<%= post.id %>">
+                            <div class="comment-form">
+                                <textarea id="comment<%= post.id %>" placeholder="Write a comment..."></textarea>
+                                <br>
+                                <button onclick="postComment('<%= post.id %>')" id="comment-button<%= post.id %>" class="comment-button">Comment</button>
+                                <div id="comments<%= post.id %>" class="comments">
+                                    <!-- Comments will be dynamically loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% }) %>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.review-option input').forEach(input => {
+            input.addEventListener('change', async (event) => {
+                const review = event.target.value;
+                const userId = 'user123'; // Replace this with dynamic user identification
+
+                try {
+                    await fetch('http://localhost:3000/review', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ userId, review }),
+                    });
+                    alert('Review submitted successfully!');
+                } catch (error) {
+                    console.error('Error submitting review:', error);
+                    alert('Failed to submit review.');
+                }
+            });
+        });
+
+        // Optionally, you can fetch the current review and update the UI accordingly
+        async function fetchReview() {
+            try {
+                const response = await fetch('http://localhost:3000/review');
+                const data = await response.json();
+                console.log('Current reviews:', data);
+            } catch (error) {
+                console.error('Error fetching review:', error);
+            }
+        }
+
+        function postComment(postId) {
+            const commentTextarea = document.getElementById(`comment${postId}`);
+            const commentsContainer = document.getElementById(`comments${postId}`);
+            const commentText = commentTextarea.value;
+
+            if (commentText.trim() === '') {
+                alert('Comment cannot be empty.');
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.textContent = commentText;
+            commentsContainer.appendChild(newComment);
+            commentTextarea.value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.download-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            const postContent = document.getElementById(`post${postId}`);
+            
+            if (postContent) {
+                html2canvas(postContent, {
+                    useCORS: true,
+                    scale: 2, // Higher scale for better resolution
+                    backgroundColor: '#fff' // Set background color to white
+                })
+                .then(canvas => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = `post-${postId}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Error capturing content:', error);
+                });
+            } else {
+                console.error("Post content with ID ${postId} not found");
+            }
+        });
+    });
+});
+
+            fetchReview();
+      
+    </script>
+</body>
+</html>
